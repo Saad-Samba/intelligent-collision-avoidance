@@ -1,17 +1,26 @@
+#I have changed the death_count from outside to inside the constructor.
+
+#Provides the mathematical fuctions for the agent's movement equations.
 import math as m
 import time
+#Responsible for the simulation
 import pygame
+#For numerical data manipulation
 import numpy as np
 
 from src.utils.math_tools import liangbarsky, get_distance
+'''The first function calculate the intersection point between the sensor and a rectangle obstacle.
+   The second computes the distance between two points.
+'''
 from src.common.constants import GameSettings, AgentSettings
+#The settings for the game and the agent
 from src.utils.text import display_text
 
 class Agent:
     """
     This class defines the intelligent agent for this project and handles it's
-    primary functions such as movment, visual updates, interfacing with sensors
-    fitness evalutation and dying.
+    primary functions such as movement, visual updates, interfacing with sensors,
+    fitness evaluation and dying.
     """
     death_count = 0
 
@@ -20,19 +29,21 @@ class Agent:
         self.y = y
         self.start_x = x
         self.start_y = y
+        #The 3 parameters are found in constants.AgentSettings
         self.size = size
         self.colour = (255, 255, 255)
         self.max_range = max_range
         self.sensors = []
         self.angle = 0  # agent's orientation
+        #couldn't find the manager variable anywhere else rather than in this constructor
         self.manager = manager
         self.base_speed = 6
         self.alive = True
         self.brain = brain
         self.fitness = 0
         self.time_alive = time.time()
-        self.considered = False
-        self.hit_target = False
+        self.considered = False #another attribute that is not being used nowhere else
+        self.hit_target = False  #Boolean that indicates if our agent has ever hit the target.
         self.best_distance = 1e6
         self._attach_sensors(field_of_view, nb_sensors, max_range)
     
