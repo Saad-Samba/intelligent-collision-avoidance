@@ -1,36 +1,27 @@
-import numpy as np
+import numpy as np #Library for Numerical Data Manipulation
 
 
-class NeuralNetwork:
-    """
-    A neural network class for the vanilla feedforward architecture.
-    Only forward propagation is implemented as per the needs of this project.
-    """
+class NeuralNetwork: #Vanilla feedforward architecture.
 
     def __init__(self, input_units, hidden_layers, hidden_units, outputs, new_weights=False):
-        self.input_units = input_units
-        self.hidden_layers = hidden_layers
-        self.hidden_units = hidden_units
-        self.outputs = outputs
+        self.input_units = input_units #number of neurons in the input layer
+        self.hidden_layers = hidden_layers #number of hidden layers
+        self.hidden_units = hidden_units #number of neuros in a hidden layer with all the hidden layers having the same number.
+        self.outputs = outputs #number of units in the output layer
         if new_weights:
-            self.weights = new_weights
+            self.weights = new_weights #provide weights
         else:
-            self.weights = self._create_weights()
+            self.weights = self._create_weights() #generate random weights
 
-    def _activation(self, z, tanh=True):
-        """
-        The activation function used in the neural network
-        can be either the hyperbolic tanget or the logistic function.
-        """
+    def _activation(self, z, tanh=True): # Activation function : hyperbolic tanget or logit.
+
         if tanh:
-            return np.tanh(z)
+            return np.tanh(z) #hyperbolic tangent
         else:
-            return 1 / (1 + np.exp(-z))
+            return 1 / (1 + np.exp(-z)) #logistic
 
-    def forward(self, initial_x):
-        """
-        Performs forward propagation on an initial given input matrix, x
-        """
+    def forward(self, initial_x): #Forward propagation
+
         new_x = self._activation(np.dot(initial_x, self.weights[0]))
         for i in self.weights[1:]:
             new_x = np.dot(new_x, i)
@@ -39,8 +30,9 @@ class NeuralNetwork:
 
     def _create_weights(self):
         """
-        Returns a list of np arrays which serve as the starting weights
-        for the neural network, these weights are intiliased randomly
+        Each weights between two consecutive layers can be represented in a matrix, 2-d np array.
+        The function then returns a list of matrices which serve as the starting weights
+        for the neural network, these weights are initialised randomly
         from a normal distribution with mean 0.
         """
         w_first = np.random.randn(self.input_units, self.hidden_units)
@@ -54,26 +46,25 @@ class NeuralNetwork:
 
     def convert_weights_to_genome(self):
         """
-        Takes the weights of the network as a list of np arrays
-        and converts them into a single unrolled 1-D np array (a genome)
+        Takes the weights of the network as a list of matrices
+        and converts them into a single vector. (a genome)
         """
-        flattened_weights = [w.flatten() for w in self.weights]
-        genome = np.concatenate(flattened_weights)
+        flattened_weights = [w.flatten() for w in self.weights] #return a list of vector
+        genome = np.concatenate(flattened_weights) #return one vector
         return genome
 
     def convert_genome_to_weights(self, genome):
         """
-        Takes a 1-D np array, the genome, and reshapes it into the a list of
-        np arrays.
+        Takes a vector, the genome, and reshapes it into the a list of
+        matrices.
         """
-        shapes = [np.shape(s) for s in self.weights]
-        products = [i[0]*i[1] for i in shapes]
+        shapes = [np.shape(s) for s in self.weights] #shape is a tuple that contains the length of the columns and rows (N,M)
+        products = [i[0]*i[1] for i in shapes] #retruns the number of elements in the matric, which is NxM
         weights = []
         start_idx = 0
         for i in range(len(products)):
-            stop_idx = sum(products[:i+1])
-            # reshape such that each weight matrix matches the original NN dimensions
+            stop_idx = sum(products[:i+1]) #the position of the last weight of a matrix
             weight = np.reshape(genome[start_idx:stop_idx], shapes[i])
             weights.append(weight)
-            start_idx += products[i]
+            start_idx += products[i] #the position of the first weight of a matrix
         return weights
