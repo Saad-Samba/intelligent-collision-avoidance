@@ -18,7 +18,7 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         self.generation = 0
         self.best_fitness = 0 #?
 
-    def check_if_all_dead(self): #Checks if all the members of the population have died.
+    def check_if_all_dead(self): #Checks if a generation died.
 
         if Agent.deaths >= len(self.population):
             return True
@@ -26,14 +26,13 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
 
     def _get_cumulative_fitness(self):
         """
-        Returns the cumulative fitnesses of the population,
-        these are then treated as the probabilites for selection
-        of each agent in the roulette wheel selection strategy.
+        Returns the cumulative fitness of the population,
+        these are then treated as the probability for selection
+        of each robot in the roulette wheel selection strategy.
         """
         self.population.sort(key=lambda x: x.fitness)
         fitness_values = [p.fitness for p in self.population]
-        fitness_sum = sum(fitness_values)
-        relative_fitness_values = [(v / fitness_sum) for v in fitness_values]
+        relative_fitness_values = [(f / sum(fitness_values)) for f in fitness_values]
         cumulative_fitness = list(accumulate(relative_fitness_values))
         return cumulative_fitness
 
