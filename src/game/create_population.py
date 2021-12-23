@@ -9,7 +9,7 @@ def create_population(population_size):
     population = []
     for _ in range(population_size):
         brain = NeuralNetwork(
-            input_units=NeuralNetworkSettings.INPUT_UNITS,
+            inputs=NeuralNetworkSettings.INPUT_UNITS,
             hidden_layers=NeuralNetworkSettings.HIDDEN_LAYERS,
             hidden_units=NeuralNetworkSettings.HIDDEN_UNITS,
             outputs=NeuralNetworkSettings.OUTPUTS,

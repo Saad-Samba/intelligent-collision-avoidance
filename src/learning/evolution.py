@@ -67,7 +67,7 @@ class Evolution:
         the population but with weights passed by argument.
         """
         brain = NeuralNetwork(
-            input_units=NeuralNetworkSettings.INPUT_UNITS,
+            inputs=NeuralNetworkSettings.INPUT_UNITS,
             hidden_layers=NeuralNetworkSettings.HIDDEN_LAYERS,
             hidden_units=NeuralNetworkSettings.HIDDEN_UNITS,
             outputs=NeuralNetworkSettings.OUTPUTS,

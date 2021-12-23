@@ -3,8 +3,8 @@ import numpy as np #Library for Numerical Data Manipulation
 
 class NeuralNetwork: #Vanilla feedforward architecture.
 
-    def __init__(self, input_units, hidden_layers, hidden_units, outputs, new_weights=False):
-        self.input_units = input_units #number of neurons in the input layer
+    def __init__(self, inputs, hidden_layers, hidden_units, outputs, new_weights=False):
+        self.inputs = inputs #number of neurons in the input layer
         self.hidden_layers = hidden_layers #number of hidden layers
         self.hidden_units = hidden_units #number of neuros in a hidden layer with all the hidden layers having the same number.
         self.outputs = outputs #number of units in the output layer
@@ -35,7 +35,7 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         for the neural network, these weights are initialised randomly
         from a normal distribution with mean 0.
         """
-        w_first = np.random.randn(self.input_units, self.hidden_units)
+        w_first = np.random.randn(self.inputs, self.hidden_units)
         w_last = np.random.randn(self.hidden_units, self.outputs)
         weights = [w_first]
         for _ in range(self.hidden_layers - 1):
