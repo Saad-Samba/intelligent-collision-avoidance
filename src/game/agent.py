@@ -1,4 +1,4 @@
-#I have changed the death_count from outside to inside the constructor.
+#I have changed the deaths from outside to inside the constructor.
 
 #Provides the mathematical fuctions for the agent's movement equations.
 import math as m
@@ -22,7 +22,7 @@ class Agent:
     primary functions such as movement, visual updates, interfacing with sensors,
     fitness evaluation and dying.
     """
-    death_count = 0
+    deaths = 0
 
     def __init__(self, x, y, size, field_of_view, nb_sensors, max_range, manager, brain):
         self.x = x
@@ -84,7 +84,7 @@ class Agent:
         if self.alive:
             if time.time() - self.time_alive > 6:
                 self.alive = False
-                Agent.death_count += 1
+                Agent.deaths += 1
 
     def _collide(self, obstacle):
         """
@@ -96,14 +96,14 @@ class Agent:
             if self.x <= 10 or self.y <= 10 or self.y >= GameSettings.HEIGHT - 20 \
                 or self.x >= GameSettings.WIDTH - 20:
                 self.alive = False
-                Agent.death_count += 1
+                Agent.deaths += 1
             if obstacle.collide(self):
                 self.alive = False
-                Agent.death_count += 1
+                Agent.deaths += 1
             if target_distance <= self.size + 10:
                 self.alive = False
                 self.hit_target = True
-                Agent.death_count += 1
+                Agent.deaths += 1
 
     def evaluate_fitness(self):
         """

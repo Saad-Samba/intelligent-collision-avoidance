@@ -7,25 +7,20 @@ from src.game.agent import Agent
 from src.learning.neural_network import NeuralNetwork
 
 
-class Evolution:
-    """
-    This Evolution class is responsible for applying the genetic
-    algorithm which will evolve the agents towards a successful solution.
-    """
+class Evolution: # Applies the genetic algorithm which will evolve the agents towards a successful solution.
+
 
     def __init__(self, population, elitism, mutation_rate, population_size):
-        self.population = population
-        self.elitism = elitism
-        self.mutation_rate = mutation_rate
+        self.population = population #list of robots
+        self.elitism = elitism #a value that decided the number of robots to take starting from the best and going downward.
+        self.mutation_rate = mutation_rate #a value that controls the probability of a certain weight of the new born to be changed
         self.population_size = population_size
         self.generation = 0
-        self.best_fitness = 0
+        self.best_fitness = 0 #?
 
-    def check_if_all_dead(self):
-        """
-        Checks if all the members of the population have died.
-        """
-        if Agent.death_count >= len(self.population):
+    def check_if_all_dead(self): #Checks if all the members of the population have died.
+
+        if Agent.deaths >= len(self.population):
             return True
         return False
 
@@ -127,5 +122,5 @@ class Evolution:
             # parent_two = self._choose_parents_roulette(cumulative_fitness)
             child = self._create_child(parent_one, parent_two)
             next_generation.append(child)
-        Agent.death_count = 0
+        Agent.deaths = 0
         self.population = next_generation
