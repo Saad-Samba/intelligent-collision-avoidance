@@ -58,7 +58,7 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         Takes a vector, the genome, and reshapes it into the a list of
         matrices.
         """
-        shapes = [np.shape(s) for s in self.weights] #shape is a tuple that contains the length of the columns and rows (N,M)
+        shapes = [np.shape(w) for w in self.weights] #shape is a tuple that contains the length of the columns and rows (N,M)
         products = [i[0]*i[1] for i in shapes] #retruns the number of elements in the matric, which is NxM
         weights = []
         start_idx = 0
