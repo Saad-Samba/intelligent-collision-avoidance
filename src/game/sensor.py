@@ -57,12 +57,13 @@ class Sensor:
     def detect(self, screen, obstacle):
         """
         Handles all obstacle detection logic, that is if sensor is tripped by
-        only a single obstacle or multiple obstacles. This funciton will handle
+        only a single obstacle or multiple obstacles. This function will handle
         the logic to make sure the correct reading is set for the sensor.
         """
         intersection_pts = obstacle.intersect(self)
         if self.current_obstacle and self.current_obstacle != obstacle.id:
-            self._handle_additional_obstacle(obstacle, intersection_pts)
+        #checks if the sensor already read an obstacle, and if it's different from the one it's reading now
+            self._switch_to_closer_obstacle(obstacle, intersection_pts)
         else:
             x_coll, y_coll = intersection_pts
             self.reading = get_distance((self.x0, self.y0), (x_coll, y_coll))
@@ -71,9 +72,9 @@ class Sensor:
             self.activated = True
             self.current_obstacle = obstacle.id
 
-    def _handle_additional_obstacle(self, obstacle, intersection_pts):
+    def _switch_to_closer_obstacle(self, obstacle, intersection_pts):
         """
-        When an obstacle intersects a sesnor that is already activated (by another obstacle)
+        When an obstacle intersects a sensor that is already activated (by another obstacle)
         this function checks to determine which obstacle is closer to the sensor and updates
         the sensor reading and current obstacle variable accordingly.
         """
