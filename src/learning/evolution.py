@@ -31,7 +31,7 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         creating a child until n children have been created where
         n is the population size.
         """
-        cumulative_fitness = self._get_cumulative_fitness()
+        #cumulative_fitness = self._get_cumulative_fitness()
         next_generation = []
         for _ in range(self.population_size):
             parent_one = self._truncation_selection()

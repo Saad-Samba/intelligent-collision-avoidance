@@ -34,8 +34,8 @@ class Agent:
         self.brain = brain
         self.fitness = 0
         self.time_alive = time.time() #gives the birth date of the child.
-        self.hit_target = False  #Boolean that indicates if our agent has ever hit the target.
-        self.best_distance = 1e6
+        self.hit_target = False  #Boolean that indicates if our agent has ever reached the destination.
+        self.best_distance = 1e6 #why is the distace 1e6?
         self._attach_sensors(field_of_view, nb_sensors, max_range)
     
     def move(self):

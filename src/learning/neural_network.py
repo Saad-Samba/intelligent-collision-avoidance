@@ -13,9 +13,9 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         else:
             self.weights = self._create_weights() #generate random weights
 
-    def _activation(self, z, tanh=True): # Activation function : hyperbolic tanget or logit.
+    def _activation(self, z, tan_1=True): # Activation function : hyperbolic tanget or logit.
 
-        if tanh:
+        if tan_1:
             return np.tanh(z) #hyperbolic tangent
         else:
             return 1 / (1 + np.exp(-z)) #logistic
