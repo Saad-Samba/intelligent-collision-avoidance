@@ -59,10 +59,10 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
 
         return self.population[parent_index]
 
-    def _create_agent(self, weights):
+    def _create_host_agent(self, weights):
         """
-        Returns an agent with a NN that matches with the rest of
-        the population but with weights passed by argument.
+        Creates a new agent of the same population only with weights
+        passed as an argument which will be the weights taken from the parents.
         """
         brain = NeuralNetwork(
             inputs=NeuralNetworkSettings.INPUT_UNITS,
@@ -98,7 +98,7 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
                 child_genome.append(second_parent_genome[i])
         self._mutate(child_genome)
         child_weights = first_parent.brain.convert_genome_to_weights(child_genome)
-        return self._create_agent(child_weights)
+        return self._create_host_agent(child_weights)
 
     def _mutate(self, genome):
         """
