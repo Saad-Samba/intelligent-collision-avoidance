@@ -24,6 +24,15 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
             return True
         return False
 
+    def _truncation_selection(self):
+        """
+        Only the agents among the n fittest will have a change to be chosen
+        where x is the elitism value
+        """
+        self.population.sort(key=lambda x: x.fitness)
+        fittest = self.population[-self.elitism:]
+        return random.choice(fittest)
+
     def _get_cumulative_fitness(self):
         """
         Returns the cumulative fitness of the population,
@@ -36,23 +45,18 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         cumulative_fitness = list(accumulate(relative_fitness_values))
         return cumulative_fitness
 
-    def _choose_parents(self):
+    def _roulette_wheel_selection(self, cumulative_fitness):
         """
-        Returns the n fittest members of the population
-        where n is the elitism value. Truncation selection
-        """
-        self.population.sort(key=lambda x: x.fitness)
-        fittest = self.population[-self.elitism:]
-        return random.choice(fittest)
-
-    def _choose_parents_roulette(self, cumulative_fitness):
-        """
-        Employes the roulette wheel selection strategy to
-        select a parent.
-        see: https://en.wikipedia.org/wiki/Fitness_proportionate_selection
+        It chooses a random number between 0 and 1,
+        inserts it in the list of cumulative_fitness in a way to preserve the order, then it takes the first cumulative_fitness
+        value just right to it and returns it's agent (parent_index).
+        Every agent has the chance to be chosen.
+        Only that the bigger it's fitness value the bigger it's probability to be chosen.
+        ( because the bigger its fitness the bigger the interval between its according accumulative_value and the previous one)
         """
         parent_index = bisect_left(
-            cumulative_fitness, random.uniform(0, cumulative_fitness[-1]))
+            cumulative_fitness, random.uniform(0,1))
+
         return self.population[parent_index]
 
     def _create_agent(self, weights):
@@ -115,10 +119,10 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         cumulative_fitness = self._get_cumulative_fitness()
         next_generation = []
         for _ in range(self.population_size):
-            parent_one = self._choose_parents()
-            parent_two = self._choose_parents()
-            # parent_one = self._choose_parents_roulette(cumulative_fitness)
-            # parent_two = self._choose_parents_roulette(cumulative_fitness)
+            parent_one = self._truncation_selection()
+            parent_two = self._truncation_selection()
+            # parent_one = self._roulette_wheel_selection(cumulative_fitness)
+            # parent_two = self._roulette_wheel_selection(cumulative_fitness)
             child = self._create_child(parent_one, parent_two)
             next_generation.append(child)
         Agent.deaths = 0
