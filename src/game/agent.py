@@ -119,7 +119,7 @@ class Agent:
 
 class Sensor:
     """
-    This class defines the sensors that the agent uses to detect distance
+    Sensors that the agent uses to detect distance
     to nearby obstacles. It is the readings from these sensors that are then passed
     in as the input the neural network controlling the agent. The sensors in this project
     are represented as straight line segments with origin and end coordinates of
@@ -140,7 +140,7 @@ class Sensor:
 
     def update(self):
         """
-        Updates the position of the sensor in accordance with the position of the agent, 
+        Updates the position of the sensor in accordance with the position of the agent,
         such that the sensor is always 'attached' to the body of the agent.
         """
         self.x0 = self.agent.x + self.agent.size * \
@@ -164,7 +164,7 @@ class Sensor:
 
     def detect(self, screen, obstacle):
         """
-        Handles all obstacle detection logic, that is if sensor is tripped by 
+        Handles all obstacle detection logic, that is if sensor is tripped by
         only a single obstacle or multiple obstacles. This funciton will handle
         the logic to make sure the correct reading is set for the sensor.
         """
