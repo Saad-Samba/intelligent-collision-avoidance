@@ -9,11 +9,10 @@ from src.utils.math_tools import get_distance
 class Sensor:
     """
     Sensors that the agent uses to detect distance
-    to nearby obstacles. It is the readings from these sensors that are then passed
-    in as the input the neural network controlling the agent. The sensors in this project
+    to nearby obstacles. The sensors in this project
     are represented as straight line segments with origin and end coordinates of
-    (x0, y0) and (x1, y1) respectively. In order to detect distance we then use some simple
-    mathematics to check for intersection between this line segment and other shapes (obstacles).
+    (x0, y0) and (x1, y1) respectively. We the rely on mathematical functions to
+    determine the distance and intersection points.
     """
 
     def __init__(self, agent, angle, max_range, tag):
@@ -41,15 +40,19 @@ class Sensor:
         self.y1 = self.agent.y + (self.agent.size + self.max_range) * \
             m.sin(m.radians(self.angle + self.agent.angle))
 
-    def draw(self, screen):
+    def draw_indicators(self, screen):
         """
-        Draws the actual sensor onto the screen
+        Draws one line that is an extension of a sensor to give a visual indication of the robot orientation.
+        You can change which sensor by choosing a number from 0 to Number_Sensors, but it doesn't matter which one.
         """
         if self.tag == 0:
-            # draws a black line to help identify the orientation of the robot
             pygame.draw.line(screen, (0, 0, 0), (self.agent.x, self.agent.y), (self.x0, self.y0))
-        # if not self.activated: # uncomment to see end points of sensor
-        #     pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
+
+        """
+        Display end points of the sensor. (uncomment to see)
+        """
+        #if not self.activated:
+             #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
 
     def detect(self, screen, obstacle):
         """

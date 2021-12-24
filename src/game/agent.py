@@ -64,7 +64,7 @@ class Agent:
                                (int(self.x), int(self.y)), self.size, 0)
             for sensor in self.sensors:
                 sensor.update()
-                sensor.draw(screen)
+                sensor.draw_indicators(screen)
                 for obstacle in obstacles:
                     self._collide(obstacle)
                     if sensor.in_range(obstacle):

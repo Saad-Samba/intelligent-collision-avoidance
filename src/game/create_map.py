@@ -10,6 +10,5 @@ def create_map():
     # make sure id (last argument of obstacle) is unique
     obstacles.append(Circle(300, 300, 65, (0, 0, 255), 1))
     obstacles.append(Circle(500, 300, 85, (0, 0, 255), 2))
-    #obstacles.append(Rectangle(300, 300, 65, 65, (0, 0, 255), 1))
 
     return obstacles
