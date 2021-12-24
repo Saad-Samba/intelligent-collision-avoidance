@@ -99,7 +99,6 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
             field_of_view=AgentSettings.FIELD_OF_VIEW,
             nb_sensors=AgentSettings.NB_SENSORS,
             max_range=AgentSettings.MAX_RANGE,
-            manager=None,
             brain=brain
         )
         return agent

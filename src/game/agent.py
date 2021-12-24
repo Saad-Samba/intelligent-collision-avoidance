@@ -18,7 +18,7 @@ class Agent:
     """
     deaths = 0
 
-    def __init__(self, x, y, size, field_of_view, nb_sensors, max_range, manager, brain):
+    def __init__(self, x, y, size, field_of_view, nb_sensors, max_range, brain):
         self.x = x
         self.y = y
         self.start_x = x
@@ -29,14 +29,11 @@ class Agent:
         self.max_range = max_range
         self.sensors = []
         self.angle = 0  # agent's orientation
-        #couldn't find the manager variable anywhere else rather than in this constructor
-        self.manager = manager
         self.base_speed = 6
         self.alive = True
         self.brain = brain
         self.fitness = 0
-        self.time_alive = time.time()
-        self.considered = False #another attribute that is not being used nowhere else
+        self.time_alive = time.time() #gives the birth date of the child.
         self.hit_target = False  #Boolean that indicates if our agent has ever hit the target.
         self.best_distance = 1e6
         self._attach_sensors(field_of_view, nb_sensors, max_range)
