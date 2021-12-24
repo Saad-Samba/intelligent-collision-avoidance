@@ -83,6 +83,15 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         )
         return agent
 
+    def _mutate(self, genome):
+        """
+        Iterates through the genome of a new born with a probability
+        related to the mutation rate to change a gene.
+        """
+        for i in range(len(genome)):
+            if random.random() < self.mutation_rate:
+                genome[i] = random.gauss(0, 1) #normal distribution
+
     def _create_child(self, first_parent, second_parent):
         """
         Takes two parents and creates a child by applying uniform crossover
@@ -92,23 +101,16 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         first_parent_genome = first_parent.brain.convert_weights_to_genome()
         second_parent_genome = second_parent.brain.convert_weights_to_genome()
         for i in range(len(first_parent_genome)):
-            if random.random() > 0.5:
+            if random.random() > 0.5: #returns a random number between 0 and 1
                 child_genome.append(first_parent_genome[i])
             else:
                 child_genome.append(second_parent_genome[i])
         self._mutate(child_genome)
-        child_weights = first_parent.brain.convert_genome_to_weights(child_genome)
+        child_weights = first_parent.brain.convert_genome_to_weights(child_genome) 
+        """i wondered why exactly chose first parent, then I figured this function is actually 
+        independent of the agent, it's just a mathematical function that converts a vector 
+        to an array, which means we can even get it out of the class Neural Network"""
         return self._create_host_agent(child_weights)
-
-    def _mutate(self, genome):
-        """
-        Iterates through the genome of an individual candidate solution (an Agent)
-        and has a chance, equal to the mutation rate, at changing the gene at each index
-        to a new value.
-        """
-        for i in range(len(genome)):
-            if random.random() < self.mutation_rate:
-                genome[i] = random.gauss(0, 1)
 
     def make_next_generation(self):
         """
