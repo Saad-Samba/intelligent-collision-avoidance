@@ -24,6 +24,26 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
             return True
         return False
 
+
+    def make_next_generation(self):
+        """
+        Creates the next generation, by repeatedly selecting parents,
+        creating a child until n children have been created where
+        n is the population size.
+        """
+        cumulative_fitness = self._get_cumulative_fitness()
+        next_generation = []
+        for _ in range(self.population_size):
+            parent_one = self._truncation_selection()
+            parent_two = self._truncation_selection()
+            # parent_one = self._roulette_wheel_selection(cumulative_fitness)
+            # parent_two = self._roulette_wheel_selection(cumulative_fitness)
+            child = self._create_child(parent_one, parent_two)
+            next_generation.append(child)
+        Agent.deaths = 0
+        self.population = next_generation
+
+
     def _truncation_selection(self):
         """
         Only the agents among the n fittest will have a change to be chosen
@@ -33,17 +53,6 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         fittest = self.population[-self.elitism:]
         return random.choice(fittest)
 
-    def _get_cumulative_fitness(self):
-        """
-        Returns the cumulative fitness of the population,
-        these are then treated as the probability for selection
-        of each robot in the roulette wheel selection strategy.
-        """
-        self.population.sort(key=lambda x: x.fitness)
-        fitness_values = [p.fitness for p in self.population]
-        relative_fitness_values = [(f / sum(fitness_values)) for f in fitness_values]
-        cumulative_fitness = list(accumulate(relative_fitness_values))
-        return cumulative_fitness
 
     def _roulette_wheel_selection(self, cumulative_fitness):
         """
@@ -58,6 +67,18 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
             cumulative_fitness, random.uniform(0,1))
 
         return self.population[parent_index]
+    def _get_cumulative_fitness(self):
+        """
+        Returns the cumulative fitness of the population,
+        these are then treated as the probability for selection
+        of each robot in the roulette wheel selection strategy.
+        """
+        self.population.sort(key=lambda x: x.fitness)
+        fitness_values = [p.fitness for p in self.population]
+        relative_fitness_values = [(f / sum(fitness_values)) for f in fitness_values]
+        cumulative_fitness = list(accumulate(relative_fitness_values))
+        return cumulative_fitness
+
 
     def _create_host_agent(self, weights):
         """
@@ -83,14 +104,6 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         )
         return agent
 
-    def _mutate(self, genome):
-        """
-        Iterates through the genome of a new born with a probability
-        related to the mutation rate to change a gene.
-        """
-        for i in range(len(genome)):
-            if random.random() < self.mutation_rate:
-                genome[i] = random.gauss(0, 1) #normal distribution
 
     def _create_child(self, first_parent, second_parent):
         """
@@ -111,21 +124,12 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
         independent of the agent, it's just a mathematical function that converts a vector 
         to an array, which means we can even get it out of the class Neural Network"""
         return self._create_host_agent(child_weights)
+    def _mutate(self, genome):
+        """
+        Iterates through the genome of a new born with a probability
+        related to the mutation rate to change a gene.
+        """
+        for i in range(len(genome)):
+            if random.random() < self.mutation_rate:
+                genome[i] = random.gauss(0, 1) #normal distribution
 
-    def make_next_generation(self):
-        """
-        Creates the next generation, by repeatedly selecting parents,
-        creating a child until n children have been created where
-        n is the population size.
-        """
-        cumulative_fitness = self._get_cumulative_fitness()
-        next_generation = []
-        for _ in range(self.population_size):
-            parent_one = self._truncation_selection()
-            parent_two = self._truncation_selection()
-            # parent_one = self._roulette_wheel_selection(cumulative_fitness)
-            # parent_two = self._roulette_wheel_selection(cumulative_fitness)
-            child = self._create_child(parent_one, parent_two)
-            next_generation.append(child)
-        Agent.deaths = 0
-        self.population = next_generation
