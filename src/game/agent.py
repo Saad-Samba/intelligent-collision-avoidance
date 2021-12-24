@@ -1,20 +1,14 @@
-#I have changed the deaths from outside to inside the constructor.
-
-#Provides the mathematical fuctions for the agent's movement equations.
-import math as m
+import math as m #provides the mathematical fuctions for the agent's movement equations.
 import time
-#Responsible for the simulation
-import pygame
-#For numerical data manipulation
-import numpy as np
+import pygame #for the simulation
+import numpy as np #for numerical data manipulation
 
-from src.utils.math_tools import liangbarsky, get_distance
+
+from src.utils.math_tools import get_distance
 '''The first function calculate the intersection point between the sensor and a rectangle obstacle.
    The second computes the distance between two points.
 '''
-from src.common.constants import GameSettings, AgentSettings
-#The settings for the game and the agent
-from src.utils.text import display_text
+from src.common.constants import GameSettings #The settings for the game and the agent
 
 class Agent:
     """
