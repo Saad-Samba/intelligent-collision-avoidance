@@ -85,8 +85,8 @@ class Evolution: # Applies the genetic algorithm which will evolve the agents to
 
     def _create_child(self, first_parent, second_parent):
         """
-        Takes two parents and creates a child by applying genetic crossover
-        to their genes. Specifically, uniform crossover
+        Takes two parents and creates a child by applying uniform crossover
+        to their genes.
         """
         child_genome = []
         first_parent_genome = first_parent.brain.convert_weights_to_genome()

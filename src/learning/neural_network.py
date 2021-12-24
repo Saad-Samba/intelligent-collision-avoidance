@@ -48,6 +48,7 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         """
         Takes the weights of the network as a list of matrices
         and converts them into a single vector. (a genome)
+        The goal is to prepare parent agents for crossover.
         """
         flattened_weights = [w.flatten() for w in self.weights] #return a list of vector
         genome = np.concatenate(flattened_weights) #return one vector
