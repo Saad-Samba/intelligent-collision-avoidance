@@ -1,4 +1,4 @@
-from src.game.obstacle import Rectangle, Circle
+from src.game.obstacle import Circle
 
 def create_map():
     """

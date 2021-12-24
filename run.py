@@ -2,7 +2,7 @@ import pygame
 from src.common.constants import GameSettings, EvolutionSettings
 from src.game.create_population import create_population
 from src.game.create_map import create_map
-from src.game.obstacle import Rectangle, Circle
+from src.game.obstacle import Circle
 from src.learning.evolution import Evolution
 
 # game settings
