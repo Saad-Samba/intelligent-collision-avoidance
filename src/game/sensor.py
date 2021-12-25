@@ -75,8 +75,7 @@ class Sensor:
 
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
-        x_intersection, y_intersection = intersection_point
-        new_reading = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
+        new_reading = get_distance((self.x0, self.y0), intersection_point)
         if new_reading < self.reading:
             self.current_obstacle_id = obstacle.id
             self.reading = new_reading
