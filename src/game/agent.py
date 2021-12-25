@@ -67,9 +67,13 @@ class Agent:
                 sensor.draw_indicators(screen)
                 for obstacle in obstacles:
                     self._collide(obstacle)
-                    if sensor.is_in_range_modify_in_range_obstalces(obstacle):
+                    if sensor.is_in_range(obstacle):
+                        if obstacle not in sensor.obstacles_in_range:
+                            sensor.obstacles_in_range.append(obstacle)
                         sensor.draw_closest_obstacle_interaction(screen, obstacle)
                     else:
+                        if obstacle in sensor.obstacles_in_range:
+                            sensor.obstacles_in_range.remove(obstacle)
                         if sensor.activated and sensor.current_obstacle_id == obstacle.id:
                             sensor.handle_obstacle_exit()
         if self.alive:

@@ -62,8 +62,6 @@ class Sensor:
 
     def draw_closest_obstacle_interaction(self, screen, obstacle):
 
-        intersection_point = obstacle.intersection_point(self)
-        
         '''
         Displays the line segment part with the closer obstacle.
         if :
@@ -72,9 +70,11 @@ class Sensor:
         else :
         takes the obstacle's id, activates the sensor, draws its line and intersection point.
         '''
+
+        intersection_point = obstacle.intersection_point(self)
+
         if self.current_obstacle_id and self.current_obstacle_id != obstacle.id:
             self._choose_closer_obstacle(obstacle)
-        
 
         else:
             self.current_obstacle_id = obstacle.id
@@ -82,6 +82,8 @@ class Sensor:
             self.distance = get_distance(self.origin, intersection_point)
             pygame.draw.line(screen, (255, 0, 0), self.origin, intersection_point)
             pygame.draw.circle(screen, (0, 255, 0), intersection_point, 1, 0) #indicates intersectionn point
+
+
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
         new_distance = get_distance((self.x0, self.y0), intersection_point)
@@ -119,17 +121,12 @@ class Sensor:
             self.distance = self.max_range
             self.current_obstacle_id = None
 
-    def is_in_range_modify_in_range_obstalces(self, obstacle):
+    def is_in_range(self, obstacle):
         """
-        Adds or removes obstacle to or from obstacles_in_range
         Return true if the obstacle is in range and false otherwise.
         """
         intersection_point = obstacle.intersection_point(self)
         if intersection_point:
-            if obstacle not in self.obstacles_in_range:
-                self.obstacles_in_range.append(obstacle)
             return True
         else:
-            if obstacle in self.obstacles_in_range:
-                self.obstacles_in_range.remove(obstacle)
             return False
