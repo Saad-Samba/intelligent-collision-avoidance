@@ -30,18 +30,18 @@ class Circle:
         distance = get_distance((self.x, self.y), (agent.x, agent.y))
         return distance**2 < (self.r + agent.size)**2
 
-    def intersect(self, sensor):
+    def intersection_point(self, sensor):
         """
         Computes the intersection, if any, between a line segment and
         and the circle obstacle.
         """
-        intersection_pts = circle_line_intersection(
+        intersection_point = circle_line_intersection(
             (sensor.x0, sensor.y0),
             (sensor.x1, sensor.y1),
             (self.x, self.y),
             self.r
         )
-        return intersection_pts
+        return intersection_point
 
     def move(self):
         """
