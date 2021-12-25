@@ -19,7 +19,7 @@ class Sensor:
         self.agent = agent
         self.angle = angle
         self.max_range = max_range
-        self.reading = self.max_range
+        self.distance = self.max_range
         self.tag = tag
         self.x0 = self.x1 = self.y0 = self.y1 = 0
         self.origin = (self.x0,self.y0)
@@ -67,7 +67,7 @@ class Sensor:
         #if it's not already engaged 
         else:
             x_intersection, y_intersection = intersection_point
-            self.reading = get_distance(self.origin, intersection_point)
+            self.distance = get_distance(self.origin, intersection_point)
             pygame.draw.line(screen, (255, 0, 0), (self.x0, self.y0), intersection_point)
             pygame.draw.circle(screen, (0, 255, 0), (int(x_intersection), int(y_intersection)), 1, 0) #indicates intersectionn point
             self.activated = True
@@ -76,9 +76,9 @@ class Sensor:
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
         new_distance = get_distance((self.x0, self.y0), intersection_point)
-        if new_distance < self.reading:
+        if new_distance < self.distance:
             self.current_obstacle_id = obstacle.id
-            self.reading = new_distance
+            self.distance = new_distance
 
     def handle_obstacle_exit(self):
         """
@@ -86,16 +86,16 @@ class Sensor:
         when the obstacle that initially activated the sensor has disengaged.
         """
         if len(self.engaged_obstacles) > 1:
-            readings = []
+            distances = []
             for obstacle in self.engaged_obstacles:
-                # find closest, set reading to that one
+                # find closest, set distance to that one
                 coll = obstacle.intersection_point(self)
                 if coll:
                     x_intersection, y_intersection = coll
                     distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
-                    readings.append(distance)
-                    lowest_reading_idx = readings.index(min(readings))
-                    self.reading = readings[lowest_reading_idx]
+                    distances.append(distance)
+                    lowest_reading_idx = distances.index(min(distances))
+                    self.distance = distances[lowest_reading_idx]
                     self.current_obstacle_id = None
         elif len(self.engaged_obstacles) == 1:
             # get distance of only obstacle set reading to that
@@ -103,11 +103,11 @@ class Sensor:
             if coll:
                 x_intersection, y_intersection = coll
                 distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
-                self.reading = distance
+                self.distance = distance
                 self.current_obstacle_id = None
         else:
             self.activated = False
-            self.reading = self.max_range
+            self.distance = self.max_range
             self.current_obstacle_id = None
 
     def in_range(self, obstacle):

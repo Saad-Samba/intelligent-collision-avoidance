@@ -46,7 +46,7 @@ class Agent:
         """
         if self.alive:
             brain_output = self.brain.forward(
-                [(sensor.reading / self.max_range) for sensor in self.sensors])
+                [(sensor.distance / self.max_range) for sensor in self.sensors])
             speed = brain_output[0]
             angle = brain_output[1]
             self.angle = np.interp(angle, [-1, 1], [-60, 60])
