@@ -60,14 +60,15 @@ class Sensor:
              #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
 
 
-    def detect_obstacle(self, screen, obstacle):
+    def draw_closest_obstacle_interaction(self, screen, obstacle):
 
         intersection_point = obstacle.intersection_point(self)
         
         '''
+        Displays the line segment part with the closer obstacle.
         if :
-        check if the sensor is already engaged with an obstacle, and if it's different from the one it's reading now.
-        If it's the case, chooses the closer one then rerun the function to go through the next condition.
+        checks if the current obstacle id contains the id of the closest obstacle and handles it if not.
+        Keeps doing it until he reaches the other condition.
         else :
         takes the obstacle's id, activates the sensor, draws its line and intersection point.
         '''
@@ -98,19 +99,18 @@ class Sensor:
             distances = []
             for obstacle in self.obstacles_in_range:
                 # find closest, set distance to that one
-                coll = obstacle.intersection_point(self)
-                if coll:
-                    x_intersection, y_intersection = coll
-                    distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
+                intersection_point = obstacle.intersection_point(self)
+                if intersection_point:
+                    distance = get_distance(self.origin, intersection_point)
                     distances.append(distance)
                     lowest_reading_idx = distances.index(min(distances))
                     self.distance = distances[lowest_reading_idx]
                     self.current_obstacle_id = None
         elif len(self.obstacles_in_range) == 1:
             # get distance of only obstacle set reading to that
-            coll = self.obstacles_in_range[0].intersection_point(self)
-            if coll:
-                x_intersection, y_intersection = coll
+            intersection_point = self.obstacles_in_range[0].intersection_point(self)
+            if intersection_point:
+                x_intersection, y_intersection = intersection_point
                 distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
                 self.distance = distance
                 self.current_obstacle_id = None
