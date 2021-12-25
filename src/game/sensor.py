@@ -75,10 +75,10 @@ class Sensor:
 
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
-        new_reading = get_distance((self.x0, self.y0), intersection_point)
-        if new_reading < self.reading:
+        new_distance = get_distance((self.x0, self.y0), intersection_point)
+        if new_distance < self.reading:
             self.current_obstacle_id = obstacle.id
-            self.reading = new_reading
+            self.reading = new_distance
 
     def handle_obstacle_exit(self):
         """
