@@ -63,7 +63,7 @@ class Agent:
             pygame.draw.circle(screen, self.colour,
                                (int(self.x), int(self.y)), self.size, 0)
             for sensor in self.sensors:
-                sensor.update()
+                sensor.move()
                 sensor.draw_indicators(screen)
                 for obstacle in obstacles:
                     self._collide(obstacle)

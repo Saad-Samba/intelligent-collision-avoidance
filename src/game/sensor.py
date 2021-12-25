@@ -28,7 +28,7 @@ class Sensor:
         self.current_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
         self.engaged_obstacles = []
 
-    def update(self):
+    def move(self):
         """
         Updates the position of the sensor in accordance with the position of the agent,
         such that the sensor is always 'attached' to the body of the agent.
@@ -79,8 +79,7 @@ class Sensor:
             self.activated = True
             self.distance = get_distance(self.origin, intersection_point)
             pygame.draw.line(screen, (255, 0, 0), self.origin, intersection_point)
-            x_intersection, y_intersection = intersection_point
-            pygame.draw.circle(screen, (0, 255, 0), (int(x_intersection), int(y_intersection)), 1, 0) #indicates intersectionn point
+            pygame.draw.circle(screen, (0, 255, 0), intersection_point, 1, 0) #indicates intersectionn point
 
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
