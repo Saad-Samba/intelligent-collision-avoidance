@@ -119,8 +119,9 @@ class Sensor:
             self.distance = self.max_range
             self.current_obstacle_id = None
 
-    def is_in_range(self, obstacle):
+    def is_in_range_modify_in_range_obstalces(self, obstacle):
         """
+        Adds or removes obstacle to or from obstacles_in_range
         Return true if the obstacle is in range and false otherwise.
         """
         intersection_point = obstacle.intersection_point(self)

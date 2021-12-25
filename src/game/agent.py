@@ -67,7 +67,7 @@ class Agent:
                 sensor.draw_indicators(screen)
                 for obstacle in obstacles:
                     self._collide(obstacle)
-                    if sensor.is_in_range(obstacle):
+                    if sensor.is_in_range_modify_in_range_obstalces(obstacle):
                         sensor.detect_obstacle(screen, obstacle)
                     else:
                         if sensor.activated and sensor.current_obstacle_id == obstacle.id:
