@@ -26,7 +26,7 @@ class Sensor:
         self.end = (self.x1, self.y1)
         self.activated = False
         self.current_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
-        self.engaged_obstacles = []
+        self.obstacles_in_range = [] #list all obstacles in range of the sensor
 
     def move(self):
         """
@@ -59,6 +59,7 @@ class Sensor:
         #if not self.activated:
              #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
 
+
     def detect_obstacle(self, screen, obstacle):
 
         intersection_point = obstacle.intersection_point(self)
@@ -80,7 +81,6 @@ class Sensor:
             self.distance = get_distance(self.origin, intersection_point)
             pygame.draw.line(screen, (255, 0, 0), self.origin, intersection_point)
             pygame.draw.circle(screen, (0, 255, 0), intersection_point, 1, 0) #indicates intersectionn point
-
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
         new_distance = get_distance((self.x0, self.y0), intersection_point)
@@ -88,14 +88,15 @@ class Sensor:
             self.current_obstacle_id = obstacle.id
             self.distance = new_distance
 
+
     def handle_obstacle_exit(self):
         """
         Resets sensor and the current obstacle variable
         when the obstacle that initially activated the sensor has disengaged.
         """
-        if len(self.engaged_obstacles) > 1:
+        if len(self.obstacles_in_range) > 1:
             distances = []
-            for obstacle in self.engaged_obstacles:
+            for obstacle in self.obstacles_in_range:
                 # find closest, set distance to that one
                 coll = obstacle.intersection_point(self)
                 if coll:
@@ -105,9 +106,9 @@ class Sensor:
                     lowest_reading_idx = distances.index(min(distances))
                     self.distance = distances[lowest_reading_idx]
                     self.current_obstacle_id = None
-        elif len(self.engaged_obstacles) == 1:
+        elif len(self.obstacles_in_range) == 1:
             # get distance of only obstacle set reading to that
-            coll = self.engaged_obstacles[0].intersection_point(self)
+            coll = self.obstacles_in_range[0].intersection_point(self)
             if coll:
                 x_intersection, y_intersection = coll
                 distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
@@ -118,17 +119,16 @@ class Sensor:
             self.distance = self.max_range
             self.current_obstacle_id = None
 
-    def in_range(self, obstacle):
+    def is_in_range(self, obstacle):
         """
-        Return true if the obstacle intersects with the sensor
-        and false otherwise.
+        Return true if the obstacle is in range and false otherwise.
         """
-        collision = obstacle.intersection_point(self)
-        if collision:
-            if obstacle not in self.engaged_obstacles:
-                self.engaged_obstacles.append(obstacle)
+        intersection_point = obstacle.intersection_point(self)
+        if intersection_point:
+            if obstacle not in self.obstacles_in_range:
+                self.obstacles_in_range.append(obstacle)
             return True
         else:
-            if obstacle in self.engaged_obstacles:
-                self.engaged_obstacles.remove(obstacle)
+            if obstacle in self.obstacles_in_range:
+                self.obstacles_in_range.remove(obstacle)
             return False
