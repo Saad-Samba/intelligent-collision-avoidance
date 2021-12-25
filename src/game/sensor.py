@@ -25,7 +25,7 @@ class Sensor:
         self.origin = (self.x0,self.y0)
         self.end = (self.x1,self.y1)
         self.activated = False
-        self.current_obstacle_id = None #idicates which obstacle is detected by sensor in case it detects one
+        self.current_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
         self.engaged_obstacles = []
 
     def update(self):
@@ -56,15 +56,13 @@ class Sensor:
         #if not self.activated:
              #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
 
-    def detect(self, screen, obstacle):
-        """
-        Detects obstacle.
-        """
+    def detect_obstacle(self, screen, obstacle):
+
         intersection_point = obstacle.intersection_point(self)
         
         #check if the sensor is already engaged with an obstacle, and if it's different from the one it's reading now
         if self.current_obstacle_id and self.current_obstacle_id != obstacle.id:
-            self._choose_closer_obstacle(obstacle, intersection_point)
+            self._choose_closer_obstacle(obstacle)
         
         #if it's not already engaged 
         else:
@@ -75,8 +73,8 @@ class Sensor:
             self.activated = True
             self.current_obstacle_id = obstacle.id
 
-    def _choose_closer_obstacle(self, obstacle, intersection_point):
-        
+    def _choose_closer_obstacle(self, obstacle):
+        intersection_point = obstacle.intersection_point(self)
         x_intersection, y_intersection = intersection_point
         new_reading = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
         if new_reading < self.reading:

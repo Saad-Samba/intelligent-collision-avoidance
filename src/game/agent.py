@@ -68,7 +68,7 @@ class Agent:
                 for obstacle in obstacles:
                     self._collide(obstacle)
                     if sensor.in_range(obstacle):
-                        sensor.detect(screen, obstacle)
+                        sensor.detect_obstacle(screen, obstacle)
                     else:
                         if sensor.activated and sensor.current_obstacle_id == obstacle.id:
                             sensor.handle_obstacle_exit()
