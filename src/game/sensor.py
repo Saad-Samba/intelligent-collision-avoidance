@@ -22,8 +22,8 @@ class Sensor:
         self.distance = self.max_range
         self.tag = tag
         self.x0 = self.x1 = self.y0 = self.y1 = 0
-        self.origin = (self.x0,self.y0)
-        self.end = (self.x1,self.y1)
+        self.origin = (self.x0, self.y0)
+        self.end = (self.x1, self.y1)
         self.activated = False
         self.current_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
         self.engaged_obstacles = []
@@ -41,6 +41,9 @@ class Sensor:
             m.cos(m.radians(self.angle + self.agent.angle))
         self.y1 = self.agent.y + (self.agent.size + self.max_range) * \
             m.sin(m.radians(self.angle + self.agent.angle))
+        self.origin = (self.x0, self.y0)
+        self.end = (self.x1, self.y1)
+
 
     def draw_indicators(self, screen):
         """
@@ -60,18 +63,24 @@ class Sensor:
 
         intersection_point = obstacle.intersection_point(self)
         
-        #check if the sensor is already engaged with an obstacle, and if it's different from the one it's reading now
+        '''
+        if :
+        check if the sensor is already engaged with an obstacle, and if it's different from the one it's reading now.
+        If it's the case, chooses the closer one then rerun the function to go through the next condition.
+        else :
+        takes the obstacle's id, activates the sensor, draws its line and intersection point.
+        '''
         if self.current_obstacle_id and self.current_obstacle_id != obstacle.id:
             self._choose_closer_obstacle(obstacle)
         
-        #if it's not already engaged 
+
         else:
-            x_intersection, y_intersection = intersection_point
-            self.distance = get_distance(self.origin, intersection_point)
-            pygame.draw.line(screen, (255, 0, 0), (self.x0, self.y0), intersection_point)
-            pygame.draw.circle(screen, (0, 255, 0), (int(x_intersection), int(y_intersection)), 1, 0) #indicates intersectionn point
-            self.activated = True
             self.current_obstacle_id = obstacle.id
+            self.activated = True
+            self.distance = get_distance(self.origin, intersection_point)
+            pygame.draw.line(screen, (255, 0, 0), self.origin, intersection_point)
+            x_intersection, y_intersection = intersection_point
+            pygame.draw.circle(screen, (0, 255, 0), (int(x_intersection), int(y_intersection)), 1, 0) #indicates intersectionn point
 
     def _choose_closer_obstacle(self, obstacle):
         intersection_point = obstacle.intersection_point(self)
