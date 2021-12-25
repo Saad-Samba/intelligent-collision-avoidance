@@ -24,8 +24,8 @@ class Sensor:
         self.x0 = self.x1 = self.y0 = self.y1 = 0
         self.origin = (self.x0, self.y0)
         self.end = (self.x1, self.y1)
-        self.activated = False
-        self.current_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
+        self.glowing = False #True if an interaction with an obstacle is drawn
+        self.glowing_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
         self.obstacles_in_range = [] #list all obstacles in range of the sensor
 
     def move(self):
@@ -56,7 +56,7 @@ class Sensor:
         """
         Display end points of the sensor. (uncomment to see)
         """
-        #if not self.activated:
+        #if not self.glowing:
              #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
 
 
@@ -73,12 +73,12 @@ class Sensor:
 
         intersection_point = obstacle.intersection_point(self)
 
-        if self.current_obstacle_id and self.current_obstacle_id != obstacle.id:
+        if self.glowing_obstacle_id and self.glowing_obstacle_id != obstacle.id:
             self._choose_closer_obstacle(obstacle)
 
         else:
-            self.current_obstacle_id = obstacle.id
-            self.activated = True
+            self.glowing_obstacle_id = obstacle.id
+            self.glowing = True
             self.distance = get_distance(self.origin, intersection_point)
             pygame.draw.line(screen, (255, 0, 0), self.origin, intersection_point)
             pygame.draw.circle(screen, (0, 255, 0), intersection_point, 1, 0) #indicates intersectionn point
@@ -88,14 +88,13 @@ class Sensor:
         intersection_point = obstacle.intersection_point(self)
         new_distance = get_distance((self.x0, self.y0), intersection_point)
         if new_distance < self.distance:
-            self.current_obstacle_id = obstacle.id
+            self.glowing_obstacle_id = obstacle.id
             self.distance = new_distance
 
 
-    def handle_obstacle_exit(self):
+    def turn_off(self):
         """
-        Resets sensor and the current obstacle variable
-        when the obstacle that initially activated the sensor has disengaged.
+        Turn off the glowing red of the closest engaged obstacle after disengagement.
         """
         if len(self.obstacles_in_range) > 1:
             distances = []
@@ -107,7 +106,7 @@ class Sensor:
                     distances.append(distance)
                     lowest_reading_idx = distances.index(min(distances))
                     self.distance = distances[lowest_reading_idx]
-                    self.current_obstacle_id = None
+                    self.glowing_obstacle_id = None
         elif len(self.obstacles_in_range) == 1:
             # get distance of only obstacle set reading to that
             intersection_point = self.obstacles_in_range[0].intersection_point(self)
@@ -115,11 +114,11 @@ class Sensor:
                 x_intersection, y_intersection = intersection_point
                 distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
                 self.distance = distance
-                self.current_obstacle_id = None
+                self.glowing_obstacle_id = None
         else:
-            self.activated = False
+            self.glowing = False
             self.distance = self.max_range
-            self.current_obstacle_id = None
+            self.glowing_obstacle_id = None
 
     def is_in_range(self, obstacle):
         """

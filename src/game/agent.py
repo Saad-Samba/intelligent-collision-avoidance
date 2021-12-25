@@ -74,8 +74,8 @@ class Agent:
                     else:
                         if obstacle in sensor.obstacles_in_range:
                             sensor.obstacles_in_range.remove(obstacle)
-                        if sensor.activated and sensor.current_obstacle_id == obstacle.id:
-                            sensor.handle_obstacle_exit()
+                        if sensor.glowing and sensor.glowing_obstacle_id == obstacle.id:
+                            sensor.turn_off()
         if self.alive:
             if time.time() - self.time_alive > 6:
                 self.alive = False
