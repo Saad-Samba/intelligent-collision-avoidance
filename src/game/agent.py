@@ -5,14 +5,10 @@ import numpy as np #for numerical data manipulation
 from src.game.sensor import Sensor
 
 from src.utils.math_tools import get_distance
-from src.common.constants import SimulationSettings #The settings for the game and the agent
+from src.common.constants import SimulationSettings
 
 class Agent:
-    """
-    This class defines the intelligent agent for this project and handles it's
-    primary functions such as movement, visual updates, interfacing with sensors,
-    fitness evaluation and dying.
-    """
+
     deaths = 0
 
     def __init__(self, x, y, size, field_of_view, nb_sensors, max_range, brain):
@@ -20,7 +16,6 @@ class Agent:
         self.y = y
         self.start_x = x
         self.start_y = y
-        #The 3 parameters are found in constants.AgentSettings
         self.size = size
         self.colour = (255, 255, 255)
         self.max_range = max_range
@@ -42,11 +37,11 @@ class Agent:
         One output controls the speed and the other controls the direction.
         """
         if self.alive:
-            brain_output = self.brain.forward(
-                [(sensor.distance / self.max_range) for sensor in self.sensors])
+            brain_output = self.brain.forward([(sensor.distance / self.max_range) for sensor in self.sensors]) #QUESTION: why do we scale downn inputs to [0,1]?
             speed = brain_output[0]
             angle = brain_output[1]
-            self.angle = np.interp(angle, [-1, 1], [-60, 60])
+            self.angle = np.interp(angle, [-1, 1], [-60, 60]) #linear interpolation is predicting a value from a set of predefined values using a linear equation https://www.youtube.com/watch?v=xwmcVd85VRE&t=26s
+            #self.angle = 60*angle
             self.x += self.base_speed * speed * (m.cos(m.radians(self.angle)))
             self.y += self.base_speed * speed * (m.sin(m.radians(self.angle)))
 
