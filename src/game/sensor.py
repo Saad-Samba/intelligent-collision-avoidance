@@ -109,7 +109,7 @@ class Sensor:
         else:
             self.glowing = False
             self.distance = self.max_range
-        self.glowing_obstacle_id = None #s # #s
+        self.glowing_obstacle_id = None
 
 
 
