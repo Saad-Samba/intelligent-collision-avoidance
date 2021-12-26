@@ -27,7 +27,7 @@ class Agent:
         self.fitness = 0
         self.time_alive = time.time() #gives the birth date of the child.
         self.hit_target = False  #Boolean that indicates if our agent has ever reached the destination.
-        self.best_distance = 1e6 #why is the distace 1e6?
+        self.best_distance = 1e6 #QUESTION: why is the distance 1e6?
         self._attach_sensors(field_of_view, nb_sensors, max_range)
     
     def move(self):
@@ -36,7 +36,7 @@ class Agent:
         The neural network outputs two values based on the sensor reading inputs.
         One output controls the speed and the other controls the direction.
         """
-        if self.alive:
+        if self.alive: #QUESTION: how was the choice for these equations made?
             brain_output = self.brain.forward([(sensor.distance / self.max_range) for sensor in self.sensors]) #QUESTION: why do we scale downn inputs to [0,1]?
             speed = brain_output[0]
             angle = brain_output[1]
@@ -58,7 +58,7 @@ class Agent:
                 sensor.move()
                 sensor.draw_indicators(screen)
                 for obstacle in obstacles:
-                    self._collide(obstacle)
+                    self.check_collision(obstacle)
                     if sensor.is_in_range(obstacle):
                         if obstacle not in sensor.obstacles_in_range:
                             sensor.obstacles_in_range.append(obstacle)
@@ -75,15 +75,14 @@ class Agent:
                 self.alive = False
                 Agent.deaths += 1
 
-    def _collide(self, obstacle):
+    def check_collision(self, obstacle):
         """
         Checks for collision between the agent and the obstacle, or
         between agent and map boundary. If there is a collision, the agent is killed.
         """
         if self.alive:
             target_distance = get_distance((self.x, self.y), SimulationSettings.TARGET_LOCATION)
-            if self.x <= 10 or self.y <= 10 or self.y >= SimulationSettings.HEIGHT - 20 \
-                or self.x >= SimulationSettings.WIDTH - 20:
+            if self.x <= 10 or self.x >= SimulationSettings.WIDTH - 20 or self.y <= 10 or self.y >= SimulationSettings.HEIGHT - 20 :
                 self.alive = False
                 Agent.deaths += 1
             if obstacle.collide(self):
