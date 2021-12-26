@@ -73,7 +73,7 @@ class Sensor:
 
         intersection_point = obstacle.intersection_point(self)
 
-        if  obstacle.id != self.glowing_obstacle_id :
+        if  obstacle.id != self.glowing_obstacle_id : #glowig_obstacle_id might exist or not
             self._choose_closer_obstacle(obstacle)
 
         else:
@@ -96,7 +96,7 @@ class Sensor:
         """
         Turn off the glowing red of the closest engaged obstacle after disengagement.
         """
-        if len(self.obstacles_in_range) > 1:
+        if len(self.obstacles_in_range) >= 1:
             distances = []
             for obstacle in self.obstacles_in_range:
                 intersection_point = obstacle.intersection_point(self)
@@ -104,19 +104,14 @@ class Sensor:
                 distances.append(distance)
             lowest = distances.index(min(distances))
             self.distance = distances[lowest]
-            self.glowing_obstacle_id = None
-        elif len(self.obstacles_in_range) == 1:
-            # get distance of only obstacle set reading to that
-            intersection_point = self.obstacles_in_range[0].intersection_point(self)
-            if intersection_point:
-                x_intersection, y_intersection = intersection_point
-                distance = get_distance((self.x0, self.y0), (x_intersection, y_intersection))
-                self.distance = distance
-                self.glowing_obstacle_id = None
+
         else:
             self.glowing = False
             self.distance = self.max_range
-            self.glowing_obstacle_id = None
+        self.glowing_obstacle_id = None
+
+
+
 
     def is_in_range(self, obstacle):
         """
