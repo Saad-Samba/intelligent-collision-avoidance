@@ -72,8 +72,10 @@ class Agent:
                             sensor.obstacles_in_range.append(obstacle)
                         sensor.draw_closest_obstacle_interaction(screen, obstacle)
                     else:
+                        #if it exist, remove obstacle from in_range obstacles
                         if obstacle in sensor.obstacles_in_range:
                             sensor.obstacles_in_range.remove(obstacle)
+                        #if it's tured on, turn off the glowig interaction
                         if sensor.glowing and sensor.glowing_obstacle_id == obstacle.id:
                             sensor.turn_off()
         if self.alive:

@@ -19,13 +19,13 @@ class Sensor:
         self.agent = agent
         self.angle = angle
         self.max_range = max_range
-        self.distance = self.max_range
+        self.distance = self.max_range #distance to the closest obstacle, set to max_range when none is detected
         self.tag = tag
         self.x0 = self.x1 = self.y0 = self.y1 = 0
         self.origin = (self.x0, self.y0)
         self.end = (self.x1, self.y1)
         self.glowing = False #True if an interaction with an obstacle is drawn
-        self.glowing_obstacle_id = None #serves to checks if the next detection is of the same obstacle or a new one
+        self.glowing_obstacle_id = None #the id of the obstacle that caused the glowing of the sensor in case there's one.
         self.obstacles_in_range = [] #list all obstacles in range of the sensor
 
     def move(self):
@@ -73,7 +73,7 @@ class Sensor:
 
         intersection_point = obstacle.intersection_point(self)
 
-        if self.glowing_obstacle_id and self.glowing_obstacle_id != obstacle.id:
+        if  obstacle.id != self.glowing_obstacle_id :
             self._choose_closer_obstacle(obstacle)
 
         else:
@@ -99,14 +99,12 @@ class Sensor:
         if len(self.obstacles_in_range) > 1:
             distances = []
             for obstacle in self.obstacles_in_range:
-                # find closest, set distance to that one
                 intersection_point = obstacle.intersection_point(self)
-                if intersection_point:
-                    distance = get_distance(self.origin, intersection_point)
-                    distances.append(distance)
-                    lowest_reading_idx = distances.index(min(distances))
-                    self.distance = distances[lowest_reading_idx]
-                    self.glowing_obstacle_id = None
+                distance = get_distance(self.origin, intersection_point)
+                distances.append(distance)
+            lowest = distances.index(min(distances))
+            self.distance = distances[lowest]
+            self.glowing_obstacle_id = None
         elif len(self.obstacles_in_range) == 1:
             # get distance of only obstacle set reading to that
             intersection_point = self.obstacles_in_range[0].intersection_point(self)
