@@ -28,7 +28,7 @@ class Agent:
         self.time_alive = time.time() #gives the birth date of the child.
         self.hit_target = False  #Boolean that indicates if our agent has ever reached the destination.
         self.best_distance = 1e6 #QUESTION: why is the distance 1e6?
-        self._attach_sensors(field_of_view, nb_sensors, max_range)
+        self._oriente_sensors(field_of_view, nb_sensors, max_range)
     
     def move(self):
         """
@@ -75,6 +75,9 @@ class Agent:
                 self.alive = False
                 Agent.deaths += 1
 
+
+
+
     def check_collision(self, obstacle):
         """
         Checks for collision between the agent and the obstacle, or
@@ -106,7 +109,7 @@ class Agent:
             self.fitness = (1 / distance_to_target) + 0.5 * (1 / self.best_distance) \
                 + 0.3 * target_factor
 
-    def _attach_sensors(self, field_of_view, nb_sensors, max_range):
+    def _oriente_sensors(self, field_of_view, nb_sensors, max_range):
         interval = field_of_view / nb_sensors
         angle = 0
         for i in range(nb_sensors):
