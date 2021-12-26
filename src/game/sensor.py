@@ -93,6 +93,7 @@ class Sensor:
 
 
     def turn_off(self):
+        #TODO: Revise the function
         """
         Turn off the glowing red of the closest engaged obstacle after disengagement.
         """
@@ -108,7 +109,7 @@ class Sensor:
         else:
             self.glowing = False
             self.distance = self.max_range
-        self.glowing_obstacle_id = None
+        self.glowing_obstacle_id = None #s # #s
 
 
 

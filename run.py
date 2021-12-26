@@ -1,16 +1,16 @@
 import pygame
-from src.common.constants import GameSettings, EvolutionSettings
+from src.common.constants import SimulationSettings, EvolutionSettings
 from src.game.create_population import create_population
 from src.game.create_map import create_map
 from src.learning.evolution import Evolution
 
 # game settings
 pygame.init()
-BACKGROUND_COLOUR = GameSettings.BACKGROUND_COLOUR
-(WIDTH, HEIGHT) = GameSettings.WIDTH, GameSettings.HEIGHT
-TARGET_LOCATION = GameSettings.TARGET_LOCATION
+BACKGROUND_COLOUR = SimulationSettings.BACKGROUND_COLOUR
+(WIDTH, HEIGHT) = SimulationSettings.WIDTH, SimulationSettings.HEIGHT
+TARGET_LOCATION = SimulationSettings.TARGET_LOCATION
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption(GameSettings.CAPTION)
+pygame.display.set_caption(SimulationSettings.CAPTION)
 SCREEN.fill(BACKGROUND_COLOUR)
 
 # GA hyperparameters

@@ -5,10 +5,7 @@ import numpy as np #for numerical data manipulation
 from src.game.sensor import Sensor
 
 from src.utils.math_tools import get_distance
-'''The first function calculate the intersection point between the sensor and a rectangle obstacle.
-   The second computes the distance between two points.
-'''
-from src.common.constants import GameSettings #The settings for the game and the agent
+from src.common.constants import SimulationSettings #The settings for the game and the agent
 
 class Agent:
     """
@@ -89,9 +86,9 @@ class Agent:
         between agent and map boundary. If there is a collision, the agent is killed.
         """
         if self.alive:
-            target_distance = get_distance((self.x, self.y), GameSettings.TARGET_LOCATION)
-            if self.x <= 10 or self.y <= 10 or self.y >= GameSettings.HEIGHT - 20 \
-                or self.x >= GameSettings.WIDTH - 20:
+            target_distance = get_distance((self.x, self.y), SimulationSettings.TARGET_LOCATION)
+            if self.x <= 10 or self.y <= 10 or self.y >= SimulationSettings.HEIGHT - 20 \
+                or self.x >= SimulationSettings.WIDTH - 20:
                 self.alive = False
                 Agent.deaths += 1
             if obstacle.collide(self):
@@ -108,7 +105,7 @@ class Agent:
         """
         if self.alive:
             robot_pos = (self.x, self.y)
-            distance_to_target = get_distance(robot_pos, GameSettings.TARGET_LOCATION)
+            distance_to_target = get_distance(robot_pos, SimulationSettings.TARGET_LOCATION)
             if distance_to_target < self.best_distance:
                 self.best_distance = distance_to_target
             target_factor = 1 if self.hit_target else 0
