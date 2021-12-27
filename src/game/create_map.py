@@ -4,7 +4,7 @@ def create_map():
     """
     Returns an array of randomly placed and sized obstacles (shapes)
     that will serve as map/obstacle course for the agents to traverse through
-    wihtou any collisions.
+    without any collisions.
     """
     obstacles = []
     # make sure id (last argument of obstacle) is unique

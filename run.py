@@ -4,7 +4,7 @@ from src.game.create_population import create_population
 from src.game.create_map import create_map
 from src.learning.evolution import Evolution
 
-# game settings
+#Simulation settings
 pygame.init()
 BACKGROUND_COLOUR = SimulationSettings.BACKGROUND_COLOUR
 (WIDTH, HEIGHT) = SimulationSettings.WIDTH, SimulationSettings.HEIGHT
@@ -13,7 +13,7 @@ SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption(SimulationSettings.CAPTION)
 SCREEN.fill(BACKGROUND_COLOUR)
 
-# GA hyperparameters
+# GA settings
 POPULATION_SIZE = EvolutionSettings.POPULATION_SIZE
 ELITISM = EvolutionSettings.ELITISM
 
@@ -41,7 +41,7 @@ obstacles = create_map()
 
 def run():
     """
-    Begins the simulation
+    Begins the game
     """
     running = True
     while running:

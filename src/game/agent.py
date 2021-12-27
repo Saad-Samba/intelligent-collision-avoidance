@@ -1,6 +1,6 @@
 import math as m #provides the mathematical fuctions for the agent's movement equations.
 import time
-import pygame #for the simulation
+import pygame #for the game
 import numpy as np #for numerical data manipulation
 from src.game.sensor import Sensor
 
@@ -52,11 +52,9 @@ class Agent:
             self.x += self.base_speed * speed * (m.cos(m.radians(self.angle)))
             self.y += self.base_speed * speed * (m.sin(m.radians(self.angle)))
 
-    def update(self, screen, obstacles): #TODO: revise update() of Agent
+    def update(self, screen, obstacles):
         """
-        Responsible for drawing the agent onto the screen after it's position
-        has been updated by the move function. Also check's if the agent has been
-        alive longer than a specified threshold and kills it if it has.
+        Update the agent movement, visuals and death.
         """
         if self.alive:
             pygame.draw.circle(screen, self.colour,
@@ -65,7 +63,6 @@ class Agent:
                 sensor.move()
                 sensor.draw_indicators(screen)
                 for obstacle in obstacles:
-                    self.check_death(obstacle)
                     #Obstacle in range?
                     #Obstacle in Range!
                     if sensor.is_in_range(obstacle):
@@ -83,10 +80,12 @@ class Agent:
                             if sensor.glowing and sensor.glowing_obstacle_id == obstacle.id:
                                 sensor.update_distance_idglowing_disengage()
 
+                    self.check_death(obstacle)
 
 
 
-    def check_death(self, obstacle):
+
+    def check_death(self, obstacle): #TODO: commit update function check_collision and update
         """
         Checks for collision between the agent and the obstacle, or
         between agent and map boundary. If there is a collision, the agent is killed.
@@ -109,9 +108,7 @@ class Agent:
                     Agent.deaths += 1
 
     def evaluate_fitness(self):
-        """
-        Scores the agent based on how well it performed on the task.
-        """
+
         if self.alive:
             position = (self.x, self.y)
             distance_to_target = get_distance(position, SimulationSettings.TARGET_LOCATION)
@@ -120,5 +117,3 @@ class Agent:
             target_factor = 1 if self.hit_target else 0
             self.fitness = (1 / distance_to_target) + 0.5 * (1 / self.best_distance) \
                 + 0.3 * target_factor
-
-
