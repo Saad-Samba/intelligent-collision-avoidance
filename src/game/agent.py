@@ -30,6 +30,13 @@ class Agent:
         self.best_distance = 1e6 #QUESTION: why is the distance 1e6?
         self._oriente_sensors(field_of_view, nb_sensors, max_range)
     
+    def _oriente_sensors(self, field_of_view, nb_sensors, max_range):
+        interval = field_of_view / nb_sensors
+        angle = 0
+        for i in range(nb_sensors):
+            self.sensors.append(Sensor(self, angle, max_range, i))
+            angle += interval
+
     def move(self):
         """
         Handles the movement of the agent based on the output of the neural network.
@@ -45,7 +52,7 @@ class Agent:
             self.x += self.base_speed * speed * (m.cos(m.radians(self.angle)))
             self.y += self.base_speed * speed * (m.sin(m.radians(self.angle)))
 
-    def update(self, screen, obstacles):
+    def update(self, screen, obstacles): #TODO: revise update() of Agent
         """
         Responsible for drawing the agent onto the screen after it's position
         has been updated by the move function. Also check's if the agent has been
@@ -58,27 +65,28 @@ class Agent:
                 sensor.move()
                 sensor.draw_indicators(screen)
                 for obstacle in obstacles:
-                    self.check_collision(obstacle)
+                    self.check_death(obstacle)
+                    #Obstacle in range?
+                    #Obstacle in Range!
                     if sensor.is_in_range(obstacle):
+                        #Obstacle just joined or was in range already?
                         if obstacle not in sensor.obstacles_in_range:
                             sensor.obstacles_in_range.append(obstacle)
-                        sensor.draw_closest_obstacle_interaction(screen, obstacle)
+                        #Obstacle is the new closest or no?
+                        sensor.find_draw_closest_obstacle_interaction(screen, obstacle)
+                    #Obstacle not in range!
                     else:
-                        #if it exist, remove obstacle from in_range obstacles
+                        #Obstacle was in range and disegaged or no?
                         if obstacle in sensor.obstacles_in_range:
                             sensor.obstacles_in_range.remove(obstacle)
-                        #if it's tured on, turn off the glowig interaction
-                        if sensor.glowing and sensor.glowing_obstacle_id == obstacle.id:
-                            sensor.turn_off()
-        if self.alive:
-            if time.time() - self.time_alive > 6:
-                self.alive = False
-                Agent.deaths += 1
+                            #Obstacle was the closest?
+                            if sensor.glowing and sensor.glowing_obstacle_id == obstacle.id:
+                                sensor.update_distance_idglowing_disengage()
 
 
 
 
-    def check_collision(self, obstacle):
+    def check_death(self, obstacle):
         """
         Checks for collision between the agent and the obstacle, or
         between agent and map boundary. If there is a collision, the agent is killed.
@@ -95,26 +103,22 @@ class Agent:
                 self.alive = False
                 self.hit_target = True
                 Agent.deaths += 1
+            if self.alive:
+                if time.time() - self.time_alive > 6:
+                    self.alive = False
+                    Agent.deaths += 1
 
     def evaluate_fitness(self):
         """
         Scores the agent based on how well it performed on the task.
         """
         if self.alive:
-            robot_pos = (self.x, self.y)
-            distance_to_target = get_distance(robot_pos, SimulationSettings.TARGET_LOCATION)
+            position = (self.x, self.y)
+            distance_to_target = get_distance(position, SimulationSettings.TARGET_LOCATION)
             if distance_to_target < self.best_distance:
                 self.best_distance = distance_to_target
             target_factor = 1 if self.hit_target else 0
             self.fitness = (1 / distance_to_target) + 0.5 * (1 / self.best_distance) \
                 + 0.3 * target_factor
-
-    def _oriente_sensors(self, field_of_view, nb_sensors, max_range):
-        interval = field_of_view / nb_sensors
-        angle = 0
-        for i in range(nb_sensors):
-            self.sensors.append(Sensor(self, angle, max_range, i))
-            angle += interval
-
 
 

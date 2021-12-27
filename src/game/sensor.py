@@ -13,6 +13,7 @@ class Sensor:
     are represented as straight line segments with origin and end coordinates of
     (x0, y0) and (x1, y1) respectively. We the rely on mathematical functions to
     determine the distance and intersection points.
+    It's ultimate task is to provide the closest distance to collision
     """
 
     def __init__(self, agent, angle, max_range, tag):
@@ -60,10 +61,9 @@ class Sensor:
              #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
 
 
-    def draw_closest_obstacle_interaction(self, screen, obstacle):
+    def find_draw_closest_obstacle_interaction(self, screen, obstacle):
 
         '''
-        Displays the line segment part with the closer obstacle.
         if :
         checks if the current obstacle id contains the id of the closest obstacle and handles it if not.
         Keeps doing it until he reaches the other condition.
@@ -71,12 +71,13 @@ class Sensor:
         takes the obstacle's id, activates the sensor, draws its line and intersection point.
         '''
 
-        intersection_point = obstacle.intersection_point(self)
-
-        if  obstacle.id != self.glowing_obstacle_id : #glowig_obstacle_id might exist or not
+        #Sensor glowing because of another obstacle?
+        if  self.glowing_obstacle_id  and self.glowing_obstacle_id != obstacle.id :
             self._choose_closer_obstacle(obstacle)
 
+        #already glowing because of this obstacle? or Sensor not glowing (glowing_id = None)
         else:
+            intersection_point = obstacle.intersection_point(self)
             self.glowing_obstacle_id = obstacle.id
             self.glowing = True
             self.distance = get_distance(self.origin, intersection_point)
@@ -92,8 +93,7 @@ class Sensor:
             self.distance = new_distance
 
 
-    def turn_off(self):
-        #TODO: Revise the function
+    def update_distance_idglowing_disengage(self):
         """
         Turn off the glowing red of the closest engaged obstacle after disengagement.
         """
