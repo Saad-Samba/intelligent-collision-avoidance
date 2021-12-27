@@ -13,21 +13,6 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         else:
             self.weights = self._create_weights() #generate random weights
 
-    def _activation(self, z, tan_1=True): # Activation function : hyperbolic tanget or logit.
-
-        if tan_1:
-            return np.tanh(z) #hyperbolic tangent
-        else:
-            return 1 / (1 + np.exp(-z)) #logistic
-
-    def forward(self, initial_x): #Forward propagation
-
-        new_x = self._activation(np.dot(initial_x, self.weights[0]))
-        for i in self.weights[1:]:
-            new_x = np.dot(new_x, i)
-            new_x = self._activation(new_x)
-        return new_x
-
     def _create_weights(self):
         """
         Each weights between two consecutive layers can be represented in a matrix, 2-d np array.
@@ -44,6 +29,22 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         weights.append(w_last)
         return weights
 
+    def _activation(self, z, tan_1=True): # Activation function : hyperbolic tanget or logit.
+
+        if tan_1:
+            return np.tanh(z) #hyperbolic tangent
+        else:
+            return 1 / (1 + np.exp(-z)) #logistic
+
+    def forward(self, initial_x): #Forward propagation
+
+        new_x = self._activation(np.dot(initial_x, self.weights[0]))
+        for i in self.weights[1:]:
+            new_x = np.dot(new_x, i)
+            new_x = self._activation(new_x)
+        return new_x
+
+
     def convert_weights_to_genome(self):
         """
         Takes the weights of the network as a list of matrices
@@ -53,7 +54,6 @@ class NeuralNetwork: #Vanilla feedforward architecture.
         flattened_weights = [w.flatten() for w in self.weights] #return a list of vector
         genome = np.concatenate(flattened_weights) #return one vector
         return genome
-
     def convert_genome_to_weights(self, genome):
         """
         Takes a vector, the genome, and reshapes it into the a list of

@@ -2,7 +2,7 @@ import pygame
 from src.common.constants import SimulationSettings, EvolutionSettings
 from src.game.create_population import create_population
 from src.game.create_map import create_map
-from src.learning.evolution import Genetic
+from src.learning.genetic import Genetic
 
 #Simulation settings
 pygame.init()
