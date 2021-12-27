@@ -2,7 +2,7 @@ import pygame
 from src.common.constants import SimulationSettings, EvolutionSettings
 from src.game.create_population import create_population
 from src.game.create_map import create_map
-from src.learning.evolution import Evolution
+from src.learning.evolution import Genetic
 
 #Simulation settings
 pygame.init()
@@ -30,7 +30,7 @@ def static_environment():
 
 agents = create_population(POPULATION_SIZE)
 
-evolution = Evolution(
+evolution = Genetic(
     agents,
     EvolutionSettings.ELITISM,
     EvolutionSettings.MUTATION_RATE,

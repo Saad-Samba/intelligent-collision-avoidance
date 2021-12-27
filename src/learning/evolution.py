@@ -7,7 +7,7 @@ from src.game.agent import Agent
 from src.learning.neural_network import NeuralNetwork
 
 
-class Evolution: # Applies the genetic algorithm which will evolve the agents towards a successful solution.
+class Genetic: # Applies the genetic algorithm which will evolve the agents towards a successful solution.
 
 
     def __init__(self, population, elitism, mutation_rate, population_size):

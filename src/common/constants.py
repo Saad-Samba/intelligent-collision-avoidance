@@ -2,7 +2,7 @@ class SimulationSettings:
     BACKGROUND_COLOUR = (0, 0, 0)
     (WIDTH, HEIGHT) = (1000, 600)
     TARGET_LOCATION = (800, 300)
-    CAPTION = "Evolution Simulation"
+    CAPTION = "Genetic Simulation"
 
 class AgentSettings:
     START_X = 175
