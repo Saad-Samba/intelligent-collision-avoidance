@@ -15,8 +15,6 @@ class Genetic: # Applies the genetic algorithm which will evolve the agents towa
         self.elitism = elitism #a value that decided the number of robots to take starting from the best and going downward.
         self.mutation_rate = mutation_rate #a value that controls the probability of a certain weight of the new born to be changed
         self.population_size = population_size
-        self.generation = 0
-        self.best_fitness = 0 #?
 
     def check_if_all_dead(self): #Checks if a generation died.
 
