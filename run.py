@@ -41,7 +41,7 @@ obstacles = create_map()
 
 def run():
     """
-    Begins the environment
+    Begins the simulation
     """
     running = True
     while running:
