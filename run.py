@@ -1,6 +1,6 @@
 import pygame
 from src.common.constants import SimulationSettings, EvolutionSettings
-from src.environment.create_population import create_population
+from src.evolutionary_neural_network.create_population import create_population
 from src.environment.create_map import create_map
 from src.evolutionary_neural_network.genetic import Genetic
 
