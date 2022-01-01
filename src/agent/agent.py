@@ -4,7 +4,7 @@ import pygame #for the environment
 import numpy as np #for numerical data manipulation
 from src.agent.sensor import Sensor
 
-from src.utils.math_tools import get_distance
+from src.common.math_tools import get_distance
 from src.common.constants import SimulationSettings
 
 class Agent:

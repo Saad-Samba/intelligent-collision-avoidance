@@ -1,7 +1,7 @@
 import pygame
 import math as m
 
-from src.utils.math_tools import get_distance
+from src.common.math_tools import get_distance
 
 
 

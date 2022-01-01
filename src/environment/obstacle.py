@@ -1,6 +1,6 @@
 import pygame
 
-from src.utils.math_tools import circle_line_intersection, get_distance
+from src.common.math_tools import circle_line_intersection, get_distance
 
 class Circle:
     """
