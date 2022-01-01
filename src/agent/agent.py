@@ -1,8 +1,8 @@
 import math as m #provides the mathematical fuctions for the agent's movement equations.
 import time
-import pygame #for the game
+import pygame #for the environment
 import numpy as np #for numerical data manipulation
-from src.game.sensor import Sensor
+from src.agent.sensor import Sensor
 
 from src.utils.math_tools import get_distance
 from src.common.constants import SimulationSettings
@@ -40,7 +40,7 @@ class Agent:
     def move(self):
         """
         Handles the movement of the agent based on the output of the neural network.
-        The neural network outputs two values based on the sensor reading inputs.
+        The neural network outputs two values based on the environment reading inputs.
         One output controls the speed and the other controls the direction.
         """
         if self.alive: #QUESTION: how was the choice for these equations made?
@@ -85,7 +85,7 @@ class Agent:
 
 
 
-    def check_death(self, obstacle): #TODO: commit update function check_collision and update
+    def check_death(self, obstacle):
         """
         Checks for collision between the agent and the obstacle, or
         between agent and map boundary. If there is a collision, the agent is killed.
@@ -95,7 +95,7 @@ class Agent:
             if self.x <= 10 or self.x >= SimulationSettings.WIDTH - 20 or self.y <= 10 or self.y >= SimulationSettings.HEIGHT - 20 :
                 self.alive = False
                 Agent.deaths += 1
-            if obstacle.collide(self):
+            if obstacle.collided(self):
                 self.alive = False
                 Agent.deaths += 1
             if target_distance <= self.size + 10:

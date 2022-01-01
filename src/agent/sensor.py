@@ -21,18 +21,18 @@ class Sensor:
         self.angle = angle
         self.max_range = max_range
         self.distance = self.max_range #distance to the closest obstacle, set to max_range when none is detected
-        self.tag = tag
+        self.tag = tag #boolean to determine if the environment is the one used to indicate agent's orientation
         self.x0 = self.x1 = self.y0 = self.y1 = 0
         self.origin = (self.x0, self.y0)
         self.end = (self.x1, self.y1)
         self.glowing = False #True if an interaction with an obstacle is drawn
-        self.glowing_obstacle_id = None #the id of the obstacle that caused the glowing of the sensor in case there's one.
-        self.obstacles_in_range = [] #list all obstacles in range of the sensor
+        self.glowing_obstacle_id = None #the id of the obstacle that caused the glowing of the environment in case there's one.
+        self.obstacles_in_range = [] #list all obstacles in range of the environment
 
     def move(self):
         """
-        Updates the position of the sensor in accordance with the position of the agent,
-        such that the sensor is always 'attached' to the body of the agent.
+        Updates the position of the environment in accordance with the position of the agent,
+        such that the environment is always 'attached' to the body of the agent.
         """
         self.x0 = self.agent.x + self.agent.size * \
             m.cos(m.radians(self.angle + self.agent.angle))
@@ -48,14 +48,14 @@ class Sensor:
 
     def draw_indicators(self, screen):
         """
-        Draws one line that is an extension of a sensor to give a visual indication of the robot orientation.
-        You can change which sensor by choosing a number from 0 to Number_Sensors, but it doesn't matter which one.
+        Draws one line that is an extension of a environment to give a visual indication of the robot orientation.
+        You can change which environment by choosing a number from 0 to Number_Sensors for thr tag, but it doesn't actually matter which one.
         """
         if self.tag == 0:
             pygame.draw.line(screen, (0, 0, 0), (self.agent.x, self.agent.y), (self.x0, self.y0))
 
         """
-        Display end points of the sensor. (uncomment to see)
+        Display end points of the environment. (uncomment to see)
         """
         #if not self.glowing:
              #pygame.draw.circle(screen, (0, 255, 0), (int(self.x1), int(self.y1)), 1, 0)
@@ -68,7 +68,7 @@ class Sensor:
         checks if the current obstacle id contains the id of the closest obstacle and handles it if not.
         Keeps doing it until he reaches the other condition.
         else :
-        takes the obstacle's id, activates the sensor, draws its line and intersection point.
+        takes the obstacle's id, activates the environment, draws its line and intersection point.
         '''
 
         #Sensor glowing because of another obstacle?

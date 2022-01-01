@@ -1,5 +1,5 @@
-from src.game.agent import Agent
-from src.learning.neural_network import NeuralNetwork
+from src.agent.agent import Agent
+from src.evolutionary_neural_network.neural_network import NeuralNetwork
 from src.common.constants import NeuralNetworkSettings, AgentSettings
 
 def create_population(population_size):

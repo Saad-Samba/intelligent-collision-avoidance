@@ -1,8 +1,8 @@
 import pygame
 from src.common.constants import SimulationSettings, EvolutionSettings
-from src.game.create_population import create_population
-from src.game.create_map import create_map
-from src.learning.genetic import Genetic
+from src.environment.create_population import create_population
+from src.environment.create_map import create_map
+from src.evolutionary_neural_network.genetic import Genetic
 
 #Simulation settings
 pygame.init()
@@ -41,7 +41,7 @@ obstacles = create_map()
 
 def run():
     """
-    Begins the game
+    Begins the environment
     """
     running = True
     while running:

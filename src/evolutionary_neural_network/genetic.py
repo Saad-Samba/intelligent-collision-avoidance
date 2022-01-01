@@ -3,8 +3,8 @@ from bisect import bisect_left
 from itertools import accumulate
 
 from src.common.constants import AgentSettings, NeuralNetworkSettings
-from src.game.agent import Agent
-from src.learning.neural_network import NeuralNetwork
+from src.agent.agent import Agent
+from src.evolutionary_neural_network.neural_network import NeuralNetwork
 
 
 class Genetic: # Applies the genetic algorithm which will evolve the agents towards a successful solution.
@@ -116,10 +116,7 @@ class Genetic: # Applies the genetic algorithm which will evolve the agents towa
             else:
                 child_genome.append(second_parent_genome[i])
         self._mutate(child_genome)
-        child_weights = first_parent.brain.convert_genome_to_weights(child_genome) 
-        """i wondered why exactly chose first parent, then I figured this function is actually 
-        independent of the agent, it's just a mathematical function that converts a vector 
-        to an array, which means we can even get it out of the class Neural Network"""
+        child_weights = first_parent.brain.convert_genome_to_weights(child_genome)
         return self._create_host_agent(child_weights)
     def _mutate(self, genome):
         """

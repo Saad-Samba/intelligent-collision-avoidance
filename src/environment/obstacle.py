@@ -22,27 +22,6 @@ class Circle:
         """
         pygame.draw.circle(screen, self.colour, (self.x, self.y), self.r, 0)
 
-    def collide(self, agent):
-        """
-        Returns True if the agent has collided with the circle
-        and False otherwise.
-        """
-        distance = get_distance((self.x, self.y), (agent.x, agent.y))
-        return distance**2 < (self.r + agent.size)**2
-
-    def intersection_point(self, sensor):
-        """
-        Computes the intersection, if any, between a line segment and
-        and the circle obstacle.
-        """
-        intersection_point = circle_line_intersection(
-            (sensor.x0, sensor.y0),
-            (sensor.x1, sensor.y1),
-            (self.x, self.y),
-            self.r
-        )
-        return intersection_point
-
     def move(self):
         """
         Makes the circle oscillate back and forth in the y
@@ -59,3 +38,23 @@ class Circle:
             self.reached_bottom = False
         self.y += 0.5 * self.direction
 
+    def intersection_point(self, sensor):
+        """
+        Computes the intersection, if any, between a line segment and
+        and the circle obstacle.
+        """
+        intersection_point = circle_line_intersection(
+            (sensor.x0, sensor.y0),
+            (sensor.x1, sensor.y1),
+            (self.x, self.y),
+            self.r
+        )
+        return intersection_point
+
+    def collided(self, agent):
+        """
+        Returns True if the agent has collided with the circle
+        and False otherwise.
+        """
+        distance = get_distance((self.x, self.y), (agent.x, agent.y))
+        return distance**2 < (self.r + agent.size)**2
