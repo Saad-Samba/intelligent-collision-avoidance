@@ -27,7 +27,7 @@ The robot's lifespan ends when one of three conditions is met:
 * The robot collides with an obstacle
 * The robot collides with the boundaries of the map
 * The time that the robot is alive exceeds a preset threshold : to prevent a situation where the robot achieves a speed of zero indefinitely and is therefore unable to move.
-* The robot collides with the target
+* The robot collides with the target.
 
 
 
